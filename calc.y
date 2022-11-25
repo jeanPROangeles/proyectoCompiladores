@@ -21,7 +21,7 @@
 %token <decimal> NUMBER
 %token <sign> VAR
 %token <boolean> BOOL
-%token <sign> SUM MUL DIF DIV MOD BPA EPA ASG POW LST GRT LTE GTE YEQ NEQ NEG AND BOR
+%token <sign> SUM MUL DIF DIV MOD BPA EPA ASG POW LST GRT LTE GTE YEQ NEQ NEG AND BOR BR BL INT
 
 %type <decimal> exp term factor
 %type <boolean> boolop boolexp
@@ -85,6 +85,7 @@ factor: NUMBER	{
 				//printf("factor:%lf ",$1);
 				$$=$1;
 				}
+	  | BL exp BR {$$=$2;} 
       | BPA exp EPA	{$$=$2;}
 	  | VAR {$$= vars[varHash($1)];}
 	  | exp POW exp {$$= pow($1,$3);}
@@ -120,10 +121,11 @@ int main(){
 	*/
 	initVars();
 	
+	//varHash(char);
 	while(1)
 		yyparse();
-	/*
-	FILE *file = fopen("input.txt", "r");
+	
+	/*FILE *file = fopen("input.txt", "r");
     parse(file);
 	*/
 	return 0;
